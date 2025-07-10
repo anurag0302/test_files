@@ -21,4 +21,12 @@ for chunk in pd.read_csv(csv_file, chunksize=chunk_size):
     i += 1
 
 print(f"Split complete! Created {i} files.")
+
+import shutil
+
+# Zip the folder into 'csv_parts.zip'
+shutil.make_archive('csv_parts', 'zip', 'csv_parts')
+files.download('csv_parts.zip')
+
+
 ```

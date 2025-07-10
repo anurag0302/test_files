@@ -30,3 +30,39 @@ files.download('csv_parts.zip')
 
 
 ```
+
+For merging
+```bash
+import pandas as pd
+import requests
+from io import StringIO
+
+# GitHub raw file base URL
+base_url = 'https://raw.githubusercontent.com/anurag0302/test_files/main/store-sales-time-series-forecasting/train'
+
+# Number of parts
+num_files = 10  # Change if more or fewer files
+
+# Download and merge all CSV parts
+all_parts = []
+for i in range(num_files):
+    file_name = f'part_{i}.csv'
+    file_url = f'{base_url}/{file_name}'
+    print(f'Downloading: {file_url}')
+    
+    response = requests.get(file_url)
+    if response.status_code == 200:
+        df = pd.read_csv(StringIO(response.text))
+        all_parts.append(df)
+    else:
+        print(f'⚠️ Failed to download {file_name} (status: {response.status_code})')
+
+# Concatenate into one DataFrame
+df = pd.concat(all_parts, ignore_index=True)
+
+print('✅ All parts downloaded and merged into DataFrame `df`')
+print(df.head())
+```
+
+
+
